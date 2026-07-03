@@ -72,8 +72,8 @@ export default async function AdminPage({
         <Link href="/admin/children">
           <Card className="transition-colors hover:bg-muted/50">
             <CardHeader>
-              <CardTitle className="text-base">Postępy dzieci</CardTitle>
-              <CardDescription>Przeglądaj wyniki i raporty dla każdego dziecka</CardDescription>
+              <CardTitle className="text-base">Dzieci</CardTitle>
+              <CardDescription>Edytuj dane dzieci, przeglądaj i poprawiaj wyniki</CardDescription>
             </CardHeader>
           </Card>
         </Link>

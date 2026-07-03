@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import { requireAdmin } from '@/lib/auth';
 import { TEST_DEFINITIONS, TestType } from '@/lib/domain/tests';
+import { parseResultValue, parseTestedAt } from '@/lib/validation/test-result';
 
 export async function createTestResult(formData: FormData) {
   await requireAdmin();
@@ -15,18 +16,10 @@ export async function createTestResult(formData: FormData) {
 
   if (!childId) throw new Error('Dziecko jest wymagane.');
   if (!testType || !(testType in TEST_DEFINITIONS)) throw new Error('Nieprawidłowy typ testu.');
-  if (!testedAtInput) throw new Error('Data jest wymagana.');
 
   const definition = TEST_DEFINITIONS[testType as TestType];
-  const value = parseFloat(valueInput);
-
-  if (isNaN(value)) throw new Error('Nieprawidłowa wartość.');
-  if (value < definition.minValue || value > definition.maxValue) {
-    throw new Error(`Wartość musi być między ${definition.minValue} a ${definition.maxValue} ${definition.unit}.`);
-  }
-
-  const testedAt = new Date(testedAtInput);
-  if (isNaN(testedAt.getTime())) throw new Error('Nieprawidłowa data.');
+  const value = parseResultValue(testType as TestType, valueInput);
+  const testedAt = parseTestedAt(testedAtInput);
 
   const child = await prisma.child.findUnique({ where: { id: childId }, select: { id: true } });
   if (!child) throw new Error('Nie znaleziono dziecka.');

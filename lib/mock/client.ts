@@ -93,10 +93,18 @@ const mockClient: any = {
       ...data,
       createdAt: new Date(),
     }),
+
+    update: async ({ where, data }: { where: { id: string }; data: Record<string, unknown> }) => {
+      const child = db.children.find((c) => c.id === where.id);
+      if (!child) return null;
+      Object.assign(child, data);
+      return enrichChild(child);
+    },
   },
 
   group: {
     findMany: async () => db.groups,
+    findUnique: async ({ where }: { where: { id: string } }) => getGroup(where.id),
   },
 
   trainerGroup: {
@@ -109,6 +117,27 @@ const mockClient: any = {
       ...data,
       createdAt: new Date(),
     }),
+
+    findUnique: async ({ where }: { where: { id: string } }) => {
+      const result = db.testResults.find((r) => r.id === where.id);
+      if (!result) return null;
+      const child = db.children.find((c) => c.id === result.childId) ?? null;
+      return { ...result, child };
+    },
+
+    update: async ({ where, data }: { where: { id: string }; data: Record<string, unknown> }) => {
+      const result = db.testResults.find((r) => r.id === where.id);
+      if (!result) return null;
+      Object.assign(result, data);
+      return result;
+    },
+
+    delete: async ({ where }: { where: { id: string } }) => {
+      const index = db.testResults.findIndex((r) => r.id === where.id);
+      if (index === -1) return null;
+      const [removed] = db.testResults.splice(index, 1);
+      return removed;
+    },
   },
 
   physiotherapistReport: {

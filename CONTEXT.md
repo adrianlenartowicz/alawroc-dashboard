@@ -24,5 +24,7 @@ Accessible at `/admin`. Separate layout from the main app. Operations:
 
 - **Create user** — creates a PARENT (with children, no results) or TRAINER (with group assignments). Sends a welcome email with a one-time invite link; the user sets their own password through the link.
 - **Create physiotherapist report** — adds a report to an existing child.
+- **Edit child** — the child detail page (`/admin/children/[childId]`) lets the admin change a child's name, birth year, and group. Parent assignment is not editable.
+- **Edit/delete test result** — the same detail page lists the child's raw test results. Value and date can be edited; the test type is fixed (if the type is wrong, delete the result and re-add it). Deletes are hard deletes behind an inline confirmation.
 
 Post-creation: redirect to `/admin` with a success message.

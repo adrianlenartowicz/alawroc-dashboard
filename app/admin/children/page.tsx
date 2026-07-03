@@ -10,14 +10,14 @@ export default async function AdminChildrenPage() {
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Dzieci</h1>
-        <p className="text-sm text-muted-foreground">Wybierz dziecko, aby zobaczyć jego postępy</p>
+        <p className="text-sm text-muted-foreground">Wybierz dziecko, aby edytować jego dane i wyniki</p>
       </div>
 
       <div className="space-y-2">
         {children.map((child) => (
           <Link
             key={child.id}
-            href={`/admin/children/${child.id}/dashboard`}
+            href={`/admin/children/${child.id}`}
             className="flex items-center justify-between rounded-lg border px-4 py-3 text-sm transition-colors hover:bg-muted/50"
           >
             <div>
